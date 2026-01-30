@@ -23,24 +23,24 @@ const userSchema = new Schema({
     avatar:{
         type:String,
         required : [true,"Avatar is required "],
-        unique : true,
+        
     },
     password:{
         type : String,
         required : [true,"Password required "],
-        unique : true
+        
     },
     watchHistory :{
         type : Schema.Types.ObjectId,
         ref:"Video"
     }
 
-},{timeseries : true }
+},{timestamps : true }
 )
 
 userSchema.pre("save",function(next){
     if(!this.isModified("password")) return next();
-     this.password= bcrypt.hash(this.password);
+     this.password= bcrypt.hash(this.password,10)
      next();
 })
 userSchema.methods.isPasswordCorrect = async function (password){
@@ -48,7 +48,7 @@ userSchema.methods.isPasswordCorrect = async function (password){
 }
 
 userSchema.methods.generateAccessToken=function(){
-    jwt.sign (
+    return jwt.sign (
         {
          _id : this._id,
          email: this.email,
@@ -63,7 +63,7 @@ userSchema.methods.generateAccessToken=function(){
 
 
 userSchema.methods.generateRefereshToken=function(){
-     jwt.sign (
+    return jwt.sign (
         {
          _id : this._id,
     },
