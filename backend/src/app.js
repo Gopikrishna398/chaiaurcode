@@ -14,4 +14,6 @@ app.use(express.urlencoded({extended : true,limited:"16kb"}))
 
 app.use(express.static("public"))
 app.use(cookiesParser())
+
+
 export {app}
